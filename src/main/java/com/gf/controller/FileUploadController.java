@@ -2,6 +2,8 @@ package com.gf.controller;
 
 import com.gf.storage.StorageFileNotFountException;
 import com.gf.storage.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 @Controller
 public class FileUploadController {
 
+    private final static Logger logger = LoggerFactory.getLogger( FileUploadController.class );
+
     @Autowired
     private StorageService storageService;
 
@@ -62,7 +66,7 @@ public class FileUploadController {
     public String handleFileUpload(@RequestParam("file")MultipartFile file , RedirectAttributes redirectAttributes){
         storageService.store( file );
         redirectAttributes.addAttribute( "message" , "You successfully upload " + file.getOriginalFilename() + "!" );
-
+        logger.info( "upload file " + file.getOriginalFilename());
         return "redirect:/";
     }
 
